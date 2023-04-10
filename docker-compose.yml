@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - data:/var/db
+    environment:
+      DATABASE_URL: sqlite3:/var/db/development.sqlite3
+    command: rails server -b 0.0.0.0
+
+volumes:
+  data:
+    driver: local
