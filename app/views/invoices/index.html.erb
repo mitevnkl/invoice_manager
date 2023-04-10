@@ -2,6 +2,7 @@
 
 <div class="mb-4 d-flex justify-content-between align-itams-center">
 <h3>Фактури</h3>
+
 <%= link_to "+ Внес", new_invoice_path, class:"btn btn-primary" %>
 </div>
 
@@ -19,8 +20,8 @@
         </tr>
       </thead>
       <tbody>
-          <% @invoices.each do |invoice| %>
         <tr>
+        <% @invoices.each do |invoice| %>
           <th scope="row"><%= invoice.number %>/<%= invoice.fiscal_year.to_s[2..-1] %></th>
           <td><%= invoice.customer.split(", ").first %></td>
           <td><%= invoice.service %></td>
@@ -29,7 +30,17 @@
           <td><%= invoice.due_date.strftime("%m/%d/%Y") %></td>
           <td><p class="m-0 text-end"><%= link_to invoice_path(invoice) do %>Фактура<% end %></p></td>
         </tr>
-          <% end %>
+        <% end %>
       </tbody>
+      <tr>
+        <th><%= @invoices.count %></th>
+        <th></th>
+        <th></th>
+        <th>
+            <p class="m-0"><%= number_with_delimiter(@total, delimiter: ".") %> МКД</p>
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
     </table>
 </div>

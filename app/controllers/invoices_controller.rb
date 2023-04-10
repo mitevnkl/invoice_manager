@@ -3,7 +3,11 @@ class InvoicesController < ApplicationController
 
   # GET /invoices or /invoices.json
   def index
-    @invoices = Invoice.all.order(:number).reverse_order
+    @invoices = Invoice.all.order("number DESC")
+    @totals_mk = @invoices.where(devizna: false).sum(:total_amount)
+    @totals_eur = @invoices.where(devizna: true).sum(:total_amount)
+    @eur_to_mk = (@totals_eur * 61.5).to_i
+    @total = @totals_mk + @eur_to_mk
   end
 
   # GET /invoices/1 or /invoices/1.json
