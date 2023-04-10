@@ -1,0 +1,152 @@
+<p style="color: green"><%= notice %></p>
+<div class="d-flex mb-4 align-items-center justify-content-between">
+  <h3 class="text-muted m-0"><%= link_to invoices_path do %>Фактури <% end %> / <%= @invoice.number %>-<%= @invoice.fiscal_year.to_s[2..-1] %></h3>
+  <div class="d-flex">
+    <%= link_to 'Print', '#', onclick: 'window.print(); return false;', class:"btn btn-outline-primary" %>
+    <%= link_to "Измени", edit_invoice_path(@invoice), class:"btn btn-outline-primary mx-3" %>
+    <p><%= button_to "Избриши", @invoice, method: :delete, class:"btn btn-outline-danger" %></p>
+  </div>
+</div>
+
+<div class="bg-white shadow-lg mb-5 p-4">
+  <div id="printable-area" class="p-4 w-100">
+    <% if !@invoice.devizna? %>
+    <div class="company-info mb-5">
+      <h1 class="mb-5">Фактура</h1>
+      <h4>ИЦО 2001</h4>
+      <p class="m-0 fs-small"><small>Димитар Митев 19</small></p>
+      <p class="m-0 fs-small"><small>с. Горни Подлог</small></p>
+      <p class="m-0 fs-small"><small>2307 Кочани</small></p>
+      <p class="m-0 fs-small"><small>+389 70 336 176 | ico2001_mitev@hotmail.com</small></p>
+      <p class="m-0 fs-small"><small>МБ: 5531802 | ДБ: 4013001113978</small></p>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-2">
+        <p class="m-0">Број:</p>
+        <h6><%= @invoice.number %>/<%= @invoice.fiscal_year.to_s[2..3] %></p>
+      </div>
+      <div class="col-3">
+        <p class="m-0">Датум:</p>
+        <h6><%= @invoice.date.strftime("%m/%d/%Y")%></p>
+      </div>
+      <div class="col-3">
+        <p class="m-0">Валута:</p>
+        <h6><%= @invoice.due_date.strftime("%m/%d/%Y")%></p>
+      </div>
+      <div class="col-4">
+        <p class="m-0 text-end">Клиент:</p>
+        <% @invoice.customer.split(", ").each do |c| %>
+          <h6 class="m-0 text-end"><%= c %></h5>
+        <% end %>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Опис на услугата</th>
+          <th><p class="text-end m-0">Цена</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Релација:<h6><%= @invoice.service %></h6>
+            Возило:<h6><%= @invoice.vehicle %></h6>
+            Друго:<h6><%= @invoice.extra_notes %></h6>
+          </td>
+          <td><p class="text-end">МКД <%= number_with_delimiter(@invoice.total_amount, delimiter: ".")%></p></td>
+        </tr>
+        <tr>
+          <th>
+            <h5 class="m-0">Вкупно:</h5>
+          </th>
+          <td><h5 class="text-end m-0">МКД <%= number_with_delimiter(@invoice.total_amount, delimiter: ".")%></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="mb-5"><small>*Промет ослободен од ДДВ согласно член 24 точка 3 од ЗДДВ</small></p>
+    <div class="row">
+      <div class="col">
+        <p class="m-0">Инструкции за плаќање:</p>
+        <h6>270055318020180 - Халк Банка</p>
+      </div>
+      <div class="col">
+        <p class="text-end m-0">Директор:</p>
+        <h6 class="text-end">Игнат Митев</p>
+      </div>
+    </div>
+
+    <% else %>
+
+    <div class="company-info mb-5">
+      <h1 class="mb-5">Invoice</h1>
+      <h4>ICO 2001</h4>
+      <p class="m-0 fs-small"><small>Dimitar Mitev 19</small></p>
+      <p class="m-0 fs-small"><small>s. Gorni Podlog</small></p>
+      <p class="m-0 fs-small"><small>2307 Kocani</small></p>
+      <p class="m-0 fs-small"><small>+389 70 336 176 | ico2001_mitev@hotmail.com</small></p>
+      <p class="m-0 fs-small"><small>ID: 5531802 | VAT: MK4013001113978</small></p>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-2">
+        <p class="m-0">Number:</p>
+        <h6><%= @invoice.number %>/<%= @invoice.fiscal_year.to_s[2..3] %></p>
+      </div>
+      <div class="col-3">
+        <p class="m-0">Date:</p>
+        <h6><%= @invoice.date.strftime("%m/%d/%Y")%></p>
+      </div>
+      <div class="col-3">
+        <p class="m-0">Due Date:</p>
+        <h6><%= @invoice.due_date.strftime("%m/%d/%Y")%></p>
+      </div>
+      <div class="col-4">
+        <p class="m-0 text-end">Client:</p>
+        <% @invoice.customer.split(", ").each do |c| %>
+          <h6 class="m-0 text-end"><%= c %></h5>
+        <% end %>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Service description</th>
+          <th><p class="text-end m-0">Price</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Relation:<h6><%= @invoice.service %></h6>
+            Vehicle:<h6><%= @invoice.vehicle %></h6>
+            Extra:<h6><%= @invoice.extra_notes %></h6>
+          </td>
+          <td><p class="text-end">EUR <%= number_with_delimiter(@invoice.total_amount, delimiter: ".")%></p></td>
+        </tr>
+        <tr>
+          <th>
+            <h5 class="m-0">Total:</h5>
+          </th>
+          <td><h5 class="text-end m-0">EUR <%= number_with_delimiter(@invoice.total_amount, delimiter: ".")%></p></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row mt-5">
+      <div class="col">
+        <p class="m-0">Payment instructions:</p>
+        <h6 class="m-0">IBAN: MK07270701000128246</h6>
+        <h6 class="m-0">SWIFT: EXPCMK22</h6>
+        <p class="m-0">Halkbank AD - Skopje, North Macedonia</p>
+      </div>
+      <div class="col">
+        <p class="text-end m-0">Director:</p>
+        <h6 class="text-end">Ignat Mitev</p>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

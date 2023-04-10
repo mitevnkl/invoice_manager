@@ -1,0 +1,79 @@
+<h3 class="text-muted m-0"><%= link_to invoices_path do %>Фактури <% end %> / <%= link_to invoice_path(@invoice) do %><%= @invoice.number %>-<%= @invoice.fiscal_year.to_s[2..-1] %><% end %> / Измени</h3>
+
+<div class="bg-light p-4">
+<%= simple_form_for(@invoice) do |form| %>
+  <% if @invoice.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
+      <ul>
+        <% @invoice.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col">
+      <%= form.input :number, label:"Број" %>
+    </div>
+
+    <div class="col">
+      <%= form.input :fiscal_year, label:"Фискална година" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <%= form.input :date, label:"Датум" %>
+    </div>
+
+    <div class="col">
+      <%= form.input :due_date, label:"Валута" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <%= form.input :total_amount, placeholder: "МКД", label:"Цена" %>
+    </div>
+
+    <div class="col">
+      <%= form.input :vehicle, list: "vehicles-list", label:"Возило бр.", placeholder:"Напред / Назад" %>
+      <datalist id="vehicles-list">
+        <% @vehicles.each do |vehicles| %>
+          <option value="<%= vehicles %>">
+        <% end %>
+      </datalist>
+    </div>
+  </div>
+
+  <div>
+    <%= form.input :customer, list: "customer-list", label:"Клиент", placeholder: "Име на фирма, Адреса, Град" %>
+    <datalist id="customer-list">
+      <% @customers.each do |customer| %>
+        <option value="<%= customer %>">
+      <% end %>
+    </datalist>
+  </div>
+
+  <div>
+    <%= form.input :service, list: "service-list", label: "Релација", placeholder:"Утовар - Истовар" %>
+    <datalist id="service-list">
+      <% @services.each do |service| %>
+        <option value="<%= service %>">
+      <% end %>
+    </datalist>
+  </div>
+
+
+
+  <div>
+    <%= form.input :extra_notes, label: "Друго" %>
+  </div>
+
+  <div>
+    <%= form.submit "Креирај", class:"btn btn-primary" %>
+  </div>
+<% end %>
+
+</div>

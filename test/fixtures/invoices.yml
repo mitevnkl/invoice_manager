@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: 1
+  fiscal_year: 1
+  total_amount: 1
+  service: MyText
+  customer: MyText
+  vehicle: MyString
+  date: 2023-04-07
+  due_date: 2023-04-07
+  extra_notes: MyText
+
+two:
+  number: 1
+  fiscal_year: 1
+  total_amount: 1
+  service: MyText
+  customer: MyText
+  vehicle: MyString
+  date: 2023-04-07
+  due_date: 2023-04-07
+  extra_notes: MyText

@@ -1,0 +1,35 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="mb-4 d-flex justify-content-between align-itams-center">
+<h3>Фактури</h3>
+<%= link_to "+ Внес", new_invoice_path, class:"btn btn-primary" %>
+</div>
+
+<div id="invoices">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Клиент</th>
+          <th scope="col">Релација</th>
+          <th scope="col">Износ</th>
+          <th scope="col">Дата</th>
+          <th scope="col">Валута</th>
+          <th scope="col"><p class="text-end m-0">Акции</p></th>
+        </tr>
+      </thead>
+      <tbody>
+          <% @invoices.each do |invoice| %>
+        <tr>
+          <th scope="row"><%= invoice.number %>/<%= invoice.fiscal_year.to_s[2..-1] %></th>
+          <td><%= invoice.customer.split(", ").first %></td>
+          <td><%= invoice.service %></td>
+          <td><%= number_with_delimiter(invoice.total_amount, delimiter: ".") %> <% if invoice.devizna? %>EUR<% else %>МКД<% end %></td>
+          <td><%= invoice.date.strftime("%m/%d/%Y") %></td>
+          <td><%= invoice.due_date.strftime("%m/%d/%Y") %></td>
+          <td><p class="m-0 text-end"><%= link_to invoice_path(invoice) do %>Фактура<% end %></p></td>
+        </tr>
+          <% end %>
+      </tbody>
+    </table>
+</div>
