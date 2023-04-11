@@ -1,9 +1,13 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="mb-4 d-flex justify-content-between align-itams-center">
-<h3>Фактури</h3>
-
-<%= link_to "+ Внес", new_invoice_path, class:"btn btn-primary" %>
+<div class="mb-4 d-flex align-itams-center justify-content-between">
+  <div class="d-flex">
+    <h3 class="border-bottom m-0 border-3 border-primary pb-1"><%= link_to 'Фактури', invoices_path %></h3>
+    <%= form_tag invoices_path, method: :get do %>
+      <p class="my-0 mx-5"><%= text_field_tag :search, params[:search], placeholder: "🔍 Барај сѐ", class:"form-control w-100 border border-primary" %></p>
+    <% end %>
+  </div>
+  <%= link_to "+ Внеси фактура", new_invoice_path, class:"btn btn-primary" %>
 </div>
 
 <div id="invoices">
@@ -39,6 +43,7 @@
         <th>
             <p class="m-0"><%= number_with_delimiter(@total, delimiter: ".") %> МКД</p>
         </th>
+        <th></th>
         <th></th>
         <th></th>
       </tr>

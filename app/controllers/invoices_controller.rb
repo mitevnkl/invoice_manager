@@ -3,7 +3,13 @@ class InvoicesController < ApplicationController
 
   # GET /invoices or /invoices.json
   def index
-    @invoices = Invoice.all.order("number DESC")
+    if params[:search].present?
+      search_term = "%#{params[:search].capitalize.mb_chars.to_s}%"
+      @invoices = Invoice.where('lower(CAST(number AS text)) LIKE ? OR lower(customer) LIKE ? OR lower(service) LIKE ? OR lower(vehicle) LIKE ? OR lower(extra_notes) LIKE ?', search_term, search_term, search_term, search_term, search_term)
+    else
+      @invoices = Invoice.all
+    end
+    @invoices = @invoices.order('number DESC')
     @totals_mk = @invoices.where(devizna: false).sum(:total_amount)
     @totals_eur = @invoices.where(devizna: true).sum(:total_amount)
     @eur_to_mk = (@totals_eur * 61.5).to_i
@@ -35,7 +41,7 @@ class InvoicesController < ApplicationController
 
     respond_to do |format|
       if @invoice.save
-        format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created." }
+        format.html { redirect_to invoice_url(@invoice), notice: 'Invoice was successfully created.' }
         format.json { render :show, status: :created, location: @invoice }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -48,7 +54,7 @@ class InvoicesController < ApplicationController
   def update
     respond_to do |format|
       if @invoice.update(invoice_params)
-        format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully updated." }
+        format.html { redirect_to invoice_url(@invoice), notice: 'Invoice was successfully updated.' }
         format.json { render :show, status: :ok, location: @invoice }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -62,19 +68,31 @@ class InvoicesController < ApplicationController
     @invoice.destroy
 
     respond_to do |format|
-      format.html { redirect_to invoices_url, notice: "Invoice was successfully destroyed." }
+      format.html { redirect_to invoices_url, notice: 'Invoice was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_invoice
-      @invoice = Invoice.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def invoice_params
-      params.require(:invoice).permit(:number, :fiscal_year, :total_amount, :service, :customer, :vehicle, :date, :due_date, :devizna, :extra_notes)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_invoice
+    @invoice = Invoice.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def invoice_params
+    params.require(:invoice).permit(
+      :number,
+      :fiscal_year,
+      :total_amount,
+      :service,
+      :customer,
+      :vehicle,
+      :date,
+      :due_date,
+      :devizna,
+      :extra_notes
+    )
+  end
 end

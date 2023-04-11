@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 <div class="d-flex mb-4 align-items-center justify-content-between">
-  <h3 class="text-muted m-0"><%= link_to invoices_path do %>Фактури <% end %> / <%= @invoice.number %>-<%= @invoice.fiscal_year.to_s[2..-1] %></h3>
+  <h3 class="m-0"><%= link_to invoices_path do %>Фактури <% end %> / <%= @invoice.number %>-<%= @invoice.fiscal_year.to_s[2..-1] %></h3>
   <div class="d-flex">
     <%= link_to 'Print', '#', onclick: 'window.print(); return false;', class:"btn btn-outline-primary" %>
     <%= link_to "Измени", edit_invoice_path(@invoice), class:"btn btn-outline-primary mx-3" %>
@@ -8,7 +8,7 @@
   </div>
 </div>
 
-<div class="bg-white shadow-lg mb-5 p-4">
+<div class="bg-white shadow-lg mb-5 mt-4 p-4">
   <div id="printable-area" class="p-4 w-100">
     <% if !@invoice.devizna? %>
     <div class="company-info mb-5">
