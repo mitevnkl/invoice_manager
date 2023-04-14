@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     build: .
-    image: mitevnkl/invoice_manager:v4.0  # <-- Update the tag or version here
+    # image: mitevnkl/invoice_manager:v4.0  # <-- Update the tag or version here
     ports:
       - "3000:3000"
     volumes:
